@@ -5,9 +5,9 @@
 Download and Install Python from 
 https://www.python.org/
 
-
-Install Virtual Environment module to create venv:
 ```sh
+Install Virtual Environment module to create venv:
+
 pip install virtualenv
 python -m venv env
 
