@@ -7,7 +7,7 @@ https://www.python.org/
 
 
 Install Virtual Environment module to create venv:
-
+```sh
 pip install virtualenv
 python -m venv env
 
@@ -15,7 +15,7 @@ python -m venv env
 Activate the venv: 
 
 Scripts\Activate
-
+```
 
 Clone the repository:
 https://github.com/robin-driscol/student-enrollment-analysis.git
