@@ -11,6 +11,8 @@
     <title>Student Enrollment System</title>
     <!-- CSS Files should be linked here -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'chart.js/chart.min.js'%}"></script>
+    
 </head>
 <body>
     <!-- Header  -->
@@ -25,6 +27,7 @@
     </style>
 <!-- Body -->
     <div class="main">
+        
         {% block content %}
         {% endblock content %}
     </div>
@@ -32,7 +35,9 @@
     {%include 'snippets/footer.html'%}
 
     <!-- JS files should be linked here  -->
+    
     <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+   
 </body>
 </html>
