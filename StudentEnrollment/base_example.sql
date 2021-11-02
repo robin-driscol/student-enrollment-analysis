@@ -1,0 +1,10 @@
+insert into base_example (product, quantity) values ('Oil - Shortening,liqud, Fry', 80);
+insert into base_example (product, quantity) values ('Muffin Mix - Morning Glory', 51);
+insert into base_example (product, quantity) values ('Cheese - Colby', 65);
+insert into base_example (product, quantity) values ('Puree - Kiwi', 44);
+insert into base_example (product, quantity) values ('Wine - Vouvray Cuvee Domaine', 71);
+insert into base_example (product, quantity) values ('Carbonated Water - Orange', 36);
+insert into base_example (product, quantity) values ('Lettuce - Lolla Rosa', 2);
+insert into base_example (product, quantity) values ('Wine - Riesling Dr. Pauly', 22);
+insert into base_example (product, quantity) values ('Venison - Liver', 23);
+insert into base_example (product, quantity) values ('Fondant - Icing', 67);
