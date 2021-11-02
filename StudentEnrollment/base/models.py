@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.base import Model
 
 # Create your models here.
 
@@ -31,3 +30,10 @@ class Revenue(models.Model):
     total = models.PositiveBigIntegerField(null=True)
     
     #change_percent = models.
+
+class Example(models.Model):
+    product = models.CharField(max_length=50)
+    quantity = models.IntegerField(null=True)
+
+    def __str__(self):
+        return f'{self.product} - {self.quantity}'
