@@ -13,11 +13,14 @@
     <!-- CSS Files should be linked here -->
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'style.min.css' %}">
+    <link rel="stylesheet" href="{% static 'apexcharts/apexcharts.css' %}">
+    
     <!-- JS Files should be linked here -->
     <script src="{% static 'chart.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'custom.js' %}"></script>
+    <script src="{% static 'apexcharts/apexcharts.min.js' %}"></script>
   
 
 </head>
@@ -127,7 +130,7 @@
         var myVar;
 
         function myFunction() {
-            myVar = setTimeout(showPage, 2000);
+            myVar = setTimeout(showPage, 100);
         }
 
         function showPage() {
@@ -135,6 +138,8 @@
             document.getElementById("myDiv").style.display = "block";
         }
     </script>
+    
+    
 </body>
 
 </html>
