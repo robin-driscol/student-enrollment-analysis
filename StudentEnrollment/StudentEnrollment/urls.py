@@ -20,10 +20,17 @@ from django.urls import path
 
 from base.views import(
 
-    dashboard
+    dashboard,
+    registerPage,
+    loginPage,
+    logoutUser,
 )
 
 urlpatterns = [
+    path('register/', registerPage, name="register"),
+    path('login/', loginPage, name="login"),
+    path('logout/', logoutUser, name="logout"),
+
     path('admin/', admin.site.urls),
     path('', dashboard, name='home')
 ]
