@@ -66,7 +66,6 @@ def logoutUser(request):
 
 def simple_upload(request):
     if request.method == 'POST':
-        example_resource = ExampleResource()
         dataset = Dataset()
         new_example = request.FILES['myfile']
 
@@ -75,6 +74,7 @@ def simple_upload(request):
             return render(request, 'upload/input.html')
         
         imported_data = dataset.load(new_example.read(), format='xlsx')
+
         for data in imported_data:
             value = Example(
                 data[0],
@@ -82,4 +82,5 @@ def simple_upload(request):
                 data[2]
             )
             value.save()
+
     return render(request, 'upload/input.html')
