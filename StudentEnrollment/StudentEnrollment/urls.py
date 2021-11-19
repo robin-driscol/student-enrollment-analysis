@@ -24,6 +24,8 @@ from base.views import(
     registerPage,
     loginPage,
     logoutUser,
+    #inputPage,
+    simple_upload
 )
 
 urlpatterns = [
@@ -32,7 +34,9 @@ urlpatterns = [
     path('logout/', logoutUser, name="logout"),
 
     path('admin/', admin.site.urls),
-    path('', dashboard, name='home')
+    path('', dashboard, name='home'),
+    #path('input/', inputPage, name='input'),
+    path('input/', simple_upload, name='upload')
 ]
 
 if settings.DEBUG:
