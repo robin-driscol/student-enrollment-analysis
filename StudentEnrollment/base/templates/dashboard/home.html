@@ -63,17 +63,17 @@
                     <thead>
                         <tr>
                             <th class="border-top-0">#</th>
-                            <th class="border-top-0">Product</th>
-                            <th class="border-top-0">Quantity</th>
+                            <th class="border-top-0">Room capacity</th>
+                            <th class="border-top-0">Enrolled</th>
                            
                         </tr>
                     </thead>
                     <tbody>
-                      {% for example in examples %}
+                      {% for ClassSize in ClassSizes %}
                       <tr>
-                        <td>{{ example.id }}</td>
-                        <td class="txt-oflo">{{ example.product }}</td>
-                        <td>{{ example.quantity }}</td>
+                        <td>{{ ClassSize.course_id }}</td>
+                        <td class="txt-oflo">{{ ClassSize.room_capacity }}</td>
+                        <td>{{ ClassSize.enrolled }}</td>
                      </tr>
                       {% endfor %}
                           
@@ -93,10 +93,10 @@ var options = {
   },
   series: [{
     name: 'sales',
-    data: [{% for example in examples %} {{ example.quantity }}, {% endfor %}]
+    data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
   }],
   xaxis: {
-    categories: [{% for example in examples %} '{{ example.product }}', {% endfor %}]
+    categories: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}]
   }
 }
 
@@ -107,11 +107,11 @@ chart.render();
 
 // Pie Chart integration
 var options = {
-          series: [{% for example in examples %} {{ example.quantity }}, {% endfor %}],
+          series: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}],
           chart: {
           type: 'pie',
         },
-        labels: [{% for example in examples %} '{{ example.product }}', {% endfor %}],
+        labels: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}],
     
         };
 
@@ -124,7 +124,7 @@ var options = {
 var options = {
           series: [{
             name: "Desktops",
-            data: [{% for example in examples %} {{ example.quantity }}, {% endfor %}]
+            data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
         }],
           chart: {
           height: 350,
@@ -150,7 +150,7 @@ var options = {
           },
         },
         xaxis: {
-          categories: [{% for example in examples %} '{{ example.product }}', {% endfor %}],
+          categories: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}],
         }
         };
 
@@ -164,10 +164,10 @@ var options = {
 var options = {
           series: [{
           name: 'series1',
-          data: [{% for example in examples %} {{ example.quantity }}, {% endfor %}]
+          data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
         }, {
           name: 'series2',
-          data: [{% for example in examples %} {{ example.quantity }}, {% endfor %}]
+          data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
         }],
           chart: {
           height: 350,
@@ -181,7 +181,7 @@ var options = {
           curve: 'straight'
         },
         xaxis: {
-          categories: [{% for example in examples %} '{{ example.product }}', {% endfor %}]
+          categories: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}]
         },
         tooltip: {
           
@@ -197,11 +197,11 @@ var options = {
           series: [{
           name: 'Quantity',
           type: 'column',
-          data: [{% for example in examples %} {{ example.quantity }}, {% endfor %}]
+          data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
         }, {
           name: 'Quantity',
           type: 'line',
-          data: [{% for example in examples %} {{ example.quantity }}, {% endfor %}]
+          data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
         }],
           chart: {
           height: 350,
@@ -217,9 +217,9 @@ var options = {
           enabled: true,
           enabledOnSeries: [1]
         },
-        labels: [{% for example in examples %} '{{ example.product }}', {% endfor %}],
+        labels: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}],
         xaxis: {
-            categories: [{% for example in examples %} '{{ example.product }}', {% endfor %}]
+            categories: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}]
         },
         yaxis: [{
           title: {

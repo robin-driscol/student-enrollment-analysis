@@ -1,9 +1,7 @@
 from django.shortcuts import redirect, render
-from .models import Example
+from .models import *
 from .forms import CreateUserForm
-from .resources import ExampleResource
 from tablib import Dataset
-from django.http import HttpResponse
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -13,9 +11,9 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='login')
 def dashboard(request):
-    examples = Example.objects.all()
+    ClassSize = ClassSize_1.objects.all()
     context = {
-        "examples": examples,
+        "ClassSizes": ClassSize,
     }
     return render(request, 'dashboard/home.html', context)
 
@@ -63,17 +61,19 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-
+@login_required(login_url='login')
 def simple_upload(request):
     if request.method == 'POST':
         dataset = Dataset()
         new_example = request.FILES['myfile']
 
         if not new_example.name.endswith('xlsx'):
-            messages.info(request, 'Wrong Format!')
-            return render(request, 'upload/input.html')
-        
-        imported_data = dataset.load(new_example.read(), format='xlsx')
+                messages.info(request, 'Wrong Format!')
+                return render(request, 'upload/input.html')
+
+        if new_example.name.endswith('xlsx'):
+            imported_data = dataset.load(new_example.read(), format='xlsx')
+
 
         for data in imported_data:
             value = Example(

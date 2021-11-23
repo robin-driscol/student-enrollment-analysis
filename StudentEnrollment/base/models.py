@@ -10,7 +10,6 @@ class ClassSize_1(models.Model):
     credit_hour = models.PositiveIntegerField()
     room_capacity = models.PositiveIntegerField()
     enrolled = models.PositiveIntegerField()
-    freespace = models.IntegerField()
     room_id = models.CharField(max_length=50)
     blocked = models.BooleanField()
     start_time = models.TimeField()
@@ -18,6 +17,7 @@ class ClassSize_1(models.Model):
     st_mw = models.CharField(max_length=5)
     year = models.CharField(max_length=5)
     semester = models.CharField(max_length=10)
+
     
 class Revenue(models.Model):
     year = models.CharField(max_length=5)
