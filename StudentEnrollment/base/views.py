@@ -11,11 +11,11 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='login')
 def dashboard(request):
-    ClassSize = ClassSize_1.objects.all()
-    context = {
-        "ClassSizes": ClassSize,
-    }
-    return render(request, 'dashboard/home.html', context)
+#     ClassSize = ClassSize_1.objects.all()
+#     context = {
+#         "ClassSizes": ClassSize,
+#     }
+    return render(request, 'dashboard/home.html')
 
 def registerPage(request):
     if request.user.is_authenticated:
@@ -61,26 +61,26 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-@login_required(login_url='login')
-def simple_upload(request):
-    if request.method == 'POST':
-        dataset = Dataset()
-        new_example = request.FILES['myfile']
+# @login_required(login_url='login')
+# def simple_upload(request):
+#     if request.method == 'POST':
+#         dataset = Dataset()
+#         new_example = request.FILES['myfile']
 
-        if not new_example.name.endswith('xlsx'):
-                messages.info(request, 'Wrong Format!')
-                return render(request, 'upload/input.html')
+#         if not new_example.name.endswith('xlsx'):
+#                 messages.info(request, 'Wrong Format!')
+#                 return render(request, 'upload/input.html')
 
-        if new_example.name.endswith('xlsx'):
-            imported_data = dataset.load(new_example.read(), format='xlsx')
+#         if new_example.name.endswith('xlsx'):
+#             imported_data = dataset.load(new_example.read(), format='xlsx')
 
 
-        for data in imported_data:
-            value = Example(
-                data[0],
-                data[1],
-                data[2]
-            )
-            value.save()
+#         for data in imported_data:
+#             value = Example(
+#                 data[0],
+#                 data[1],
+#                 data[2]
+#             )
+#             value.save()
 
-    return render(request, 'upload/input.html')
+#     return render(request, 'upload/input.html')
