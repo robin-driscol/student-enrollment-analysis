@@ -92,11 +92,11 @@ var options = {
     type: 'bar'
   },
   series: [{
-    name: 'sales',
-    data: []
+    name: 'capacity',
+    data: [{% for i in data %} {{ i.nroomcapacity }}, {% endfor %}]
   }],
   xaxis: {
-    categories: []
+    categories: [{% for i in data %} '{{ i.croomid }}', {% endfor %}]
   }
 }
 
@@ -107,7 +107,10 @@ chart.render();
 
 // Pie Chart integration
 var options = {
-          series: [],
+          series: [{
+            name: "Desktops",
+            data: []
+        }],
           chart: {
           type: 'pie',
         },

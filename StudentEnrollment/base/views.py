@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render
+from django.db import connection
 from .models import *
 from .forms import CreateUserForm
 from tablib import Dataset
@@ -9,13 +10,49 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+def dictfetchall(cursor):
+    "Return all rows from a cursor as a dict"
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
+
 @login_required(login_url='login')
 def dashboard(request):
 #     ClassSize = ClassSize_1.objects.all()
 #     context = {
 #         "ClassSizes": ClassSize,
 #     }
-    return render(request, 'dashboard/home.html')
+    cursor = connection.cursor()
+    cursor.execute('''select ranges."range", 
+count(section_t.usectionid) filter (where section_t.csemesterid = '{}') as "sections", 
+(count(section_t.usectionid) filter (where section_t.csemesterid = 'Summer2021'))/12 as "classize_6", 
+(count(section_t.usectionid) filter (where section_t.csemesterid = 'Summer2021'))/14 as "classize_7"
+                        from
+                        (
+                            select 1 minRange, 10 maxRange, '1-10' "range"
+                            union all
+                            select 11, 20, '11-20'
+                            union all
+                            select 21, 30, '21-30'
+                            union
+                            select 31, 40, '31-40'
+                            union all
+                            select 41, 50, '41-50'
+                            union all
+                            select 51, 60, '51-60'
+                        ) as ranges
+left join section_t
+    on section_t.nstudentenrolled between ranges.minRange and ranges.maxRange  
+group by ranges.range
+order by ranges.range''')
+    r = dictfetchall(cursor)
+
+    print(connection.queries)
+
+    return render(request, 'dashboard/home.html', {'data': r})
+
 
 def registerPage(request):
     if request.user.is_authenticated:
@@ -61,6 +98,7 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
+
 # @login_required(login_url='login')
 # def simple_upload(request):
 #     if request.method == 'POST':
@@ -84,3 +122,4 @@ def logoutUser(request):
 #             value.save()
 
 #     return render(request, 'upload/input.html')
+

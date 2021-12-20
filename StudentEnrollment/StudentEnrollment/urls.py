@@ -24,8 +24,6 @@ from base.views import(
     registerPage,
     loginPage,
     logoutUser,
-    #inputPage,
-    # simple_upload
 )
 
 urlpatterns = [
