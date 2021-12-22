@@ -26,7 +26,7 @@ def dashboard(request):
 #     }
     cursor = connection.cursor()
     cursor.execute('''select ranges."range", 
-count(section_t.usectionid) filter (where section_t.csemesterid = '{}') as "sections", 
+count(section_t.usectionid) filter (where section_t.csemesterid = 'Summer2021') as "sections", 
 (count(section_t.usectionid) filter (where section_t.csemesterid = 'Summer2021'))/12 as "classize_6", 
 (count(section_t.usectionid) filter (where section_t.csemesterid = 'Summer2021'))/14 as "classize_7"
                         from

@@ -93,10 +93,10 @@ var options = {
   },
   series: [{
     name: 'capacity',
-    data: [{% for i in data %} {{ i.nroomcapacity }}, {% endfor %}]
+    data: [{% for i in data %} {{ i.classize_6 }}, {% endfor %}]
   }],
   xaxis: {
-    categories: [{% for i in data %} '{{ i.croomid }}', {% endfor %}]
+    categories: [{% for i in data %} '{{ i.range }}', {% endfor %}]
   }
 }
 
@@ -107,15 +107,11 @@ chart.render();
 
 // Pie Chart integration
 var options = {
-          series: [{
-            name: "Desktops",
-            data: []
-        }],
+          series: [{% for i in data %} {{ i.classize_6 }}, {% endfor %}],
           chart: {
           type: 'pie',
         },
-        labels: [],
-    
+        labels: [{% for i in data %} '{{ i.range }}', {% endfor %}],
         };
 
         var chart = new ApexCharts(document.querySelector("#myPieChart"), options);
