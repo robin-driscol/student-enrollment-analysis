@@ -10,14 +10,6 @@
 <br>
 
 <div class="container">
-  <br>
-
-  <div class="card shadow">
-    <div class="card-body font-weight-bold">
-      Line Chart
-    </div>
-    <div id="myLineChart"></div>
-  </div>
 
     <br>
   
@@ -84,45 +76,6 @@
 
 
 <script>
-//Line Chart integration
-var options = {
-          series: [{
-            name: "Desktops",
-            data: [{% for i in data %} {{ i.sections }}, {% endfor %}]
-        }],
-          chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        title: {
-          text: '',
-          align: 'left'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: [],
-        }
-        };
-
-        var chart = new ApexCharts(document.querySelector("#myLineChart"), options);
-        chart.render();
-      
-
-
 //Combo Chart
 var options = {
           series: [{
