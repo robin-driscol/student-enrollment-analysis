@@ -101,8 +101,6 @@ count(section_t.usectionid) "sections"
     cursor.execute(query,(semesterID,))
     r = dictfetchall(cursor)
 
-    
-
     return render(request, 'req2/req2.html', {'data': r})
 
 def req3(request):
@@ -110,14 +108,13 @@ def req3(request):
     if request.method == "POST":
         semesterID = request.POST.get("dropdown3")
 
-    data1 = (semesterID, semesterID)
     cursor = connection.cursor()
-    cursor.execute ("""select st3.cschoolid,
-SUM(st.nstudentenrolled) "Sum",
+    data3 = (semesterID,semesterID)
+    cursor.execute('''select st3.cschoolid,SUM(st.nstudentenrolled) "Sum",
 ROUND(AVG(st.nstudentenrolled)::numeric,2) "Avgenrolled",
 ROUND(AVG(rt.nroomcapacity)::numeric,2) "Avgroom",
 ROUND(AVG(rt.nroomcapacity)::numeric,2) - ROUND(AVG(st.nstudentenrolled)::numeric,2) "Difference",
-CONCAT(ROUND(((AVG(rt.nroomcapacity) - AVG(st.nstudentenrolled))/AVG(rt.nroomcapacity)*100)::numeric,2), '%') "Unused%"
+ROUND((AVG(rt.nroomcapacity) - AVG(st.nstudentenrolled))/AVG(rt.nroomcapacity)*100) "Unused"
 from section_t st, course_t ct, school_t st3, department_t dt, room_t rt
 where st.ccourseid = ct.ccourseid and
 ct.cdepartmentid = dt.cdepartmentid and
@@ -131,7 +128,7 @@ SUM(st.nstudentenrolled) "Sum",
 ROUND(AVG(st.nstudentenrolled)::numeric,2) "Avgenrolled",
 ROUND(AVG(rt.nroomcapacity)::numeric,2) "Avgroom",
 ROUND(AVG(rt.nroomcapacity)::numeric,2) - ROUND(AVG(st.nstudentenrolled)::numeric,2) "Difference",
-CONCAT(ROUND(((AVG(rt.nroomcapacity) - AVG(st.nstudentenrolled))/AVG(rt.nroomcapacity)*100)::numeric,2), '%') "Unused%"
+ROUND((AVG(rt.nroomcapacity) - AVG(st.nstudentenrolled))/AVG(rt.nroomcapacity)*100) "Unused"
 from section_t st, course_t ct, school_t st3, department_t dt, room_t rt
 where st.ccourseid = ct.ccourseid and
 ct.cdepartmentid = dt.cdepartmentid and
@@ -139,7 +136,8 @@ dt.cschoolid = st3.cschoolid and
 rt.croomid = st.croomid and
 st.csemesterid = %s
 group by csemesterid
-""", data1)
+order by "Sum"''', data3)
+
     r = dictfetchall(cursor)
 
     return render(request, 'req3/req3.html', {'data': r})
