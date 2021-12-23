@@ -30,15 +30,6 @@ def dashboard(request):
 count(section_t.usectionid) filter (where section_t.csemesterid = %s) as "sections",
 (count(section_t.usectionid) filter (where section_t.csemesterid = %s))/12 as "classize_6",
 (count(section_t.usectionid) filter (where section_t.csemesterid = %s))/14 as "classize_7"
-#     ClassSize = ClassSize_1.objects.all()
-#     context = {
-#         "ClassSizes": ClassSize,
-#     }
-    cursor = connection.cursor()
-    cursor.execute('''select ranges."range", 
-count(section_t.usectionid) filter (where section_t.csemesterid = 'Summer2021') as "sections", 
-(count(section_t.usectionid) filter (where section_t.csemesterid = 'Summer2021'))/12 as "classize_6", 
-(count(section_t.usectionid) filter (where section_t.csemesterid = 'Summer2021'))/14 as "classize_7"
                         from
                         (
                             select 1 minRange, 10 maxRange, '1-10' "range"
@@ -114,15 +105,6 @@ count(section_t.usectionid) "sections"
 
     return render(request, 'req2/req2.html', {'data': r})
 
-
-    on section_t.nstudentenrolled between ranges.minRange and ranges.maxRange  
-group by ranges.range
-order by ranges.range''')
-    r = dictfetchall(cursor)
-
-    print(connection.queries)
-
-    return render(request, 'dashboard/home.html', {'data': r})
 
 
 def registerPage(request):
