@@ -57,11 +57,28 @@
                         <td>{{i.Unused}}%</td>
                      </tr>
                       {% endfor %}
-                      
                     </tbody>
                 </table>
             </div>
             <br>
+            <div class="table-responsive">
+              <table class="table no-wrap">
+                  <thead>
+                      <tr>
+                          <th class="border-top-0">Average of ROOM_CAPACITY</th>
+                          <th class="border-top-0">Average of ENROLLED</th>
+                          <th class="border-top-0">Average of Unused Space</th>
+                          <th class="border-top-0">Unused Percent</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in data2 %}
+                      <td>{{i.Avg}}</td>
+                    {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+          </div>
         </div>
     </div>
 </div>
