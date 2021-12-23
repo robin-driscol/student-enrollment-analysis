@@ -22,6 +22,7 @@ from base.views import(
 
     dashboard,
     req2,
+    req3,
     registerPage,
     loginPage,
     logoutUser,
@@ -35,6 +36,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', dashboard, name='home'),
     path('req2/', req2, name='req2'),
+    path('req3/', req3, name='req3'),
     #path('input/', inputPage, name='input'),
     # path('input/', simple_upload, name='upload')
 ]
