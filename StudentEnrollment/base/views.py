@@ -137,10 +137,31 @@ rt.croomid = st.croomid and
 st.csemesterid = %s
 group by csemesterid
 order by "Sum"''', data3)
+    
+    cursor2 = connection.cursor()
+    data4 = (semesterID,semesterID,semesterID,semesterID)
+    cursor2.execute('''
+                    select ROUND(AVG(st.nstudentenrolled)::numeric,2) "Avg"
+from section_t st 
+where st.csemesterid = %s
+union
+select ROUND(AVG(rt.nroomcapacity)::numeric,2)
+from section_t st, room_t rt
+where st.csemesterid = %s
+union
+select ROUND(AVG(rt.nroomcapacity)::numeric,2) - ROUND(AVG(st.nstudentenrolled)::numeric,2)
+from section_t st, room_t rt
+where st.csemesterid = %s
+union
+select ROUND(((AVG(rt.nroomcapacity) - AVG(st.nstudentenrolled))/AVG(rt.nroomcapacity)*100)::numeric,2)
+from section_t st, room_t rt
+where st.csemesterid = %s
+                    ''', data4)
 
     r = dictfetchall(cursor)
+    r2 = dictfetchall(cursor2)
 
-    return render(request, 'req3/req3.html', {'data': r})
+    return render(request, 'req3/req3.html', {'data': r, 'data2': r2})
 
 def registerPage(request):
     if request.user.is_authenticated:

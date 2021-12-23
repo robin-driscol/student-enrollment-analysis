@@ -1,11 +1,11 @@
 {% load static %}
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark" style="margin-bottom: 15px;">
   <!-- Brand -->
   <a class="navbar-brand" href="{% url 'home' %}">Student Enrollment Analysis</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4" aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
+  <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4" aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
-  </button>
+  </button> -->
   <ul class="navbar-nav">
     <li class="nav-item">
       <a class="nav-link" href="{% url 'home' %}">Home</a>
@@ -19,6 +19,7 @@
         <a class="dropdown-item" href="{% url 'req2' %}">Classroom Distribution</a>
         <a class="dropdown-item" href="{% url 'req3' %}">Usage of the resource</a>
         <a class="dropdown-item" href="#">Requirement 4</a>
+        <a class="dropdown-item" href="#">Upload</a>
       </div>
     </li>
   </ul>

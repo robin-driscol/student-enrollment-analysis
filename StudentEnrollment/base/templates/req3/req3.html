@@ -57,127 +57,16 @@
                         <td>{{i.Unused}}%</td>
                      </tr>
                       {% endfor %}
-                          
+                      
                     </tbody>
                 </table>
             </div>
+            <br>
         </div>
     </div>
 </div>
 
-
 <script>
-//Combo Chart
-var options = {
-          series: [{
-          name: 'SBE',
-          type: 'column',
-          data: [{% for i in data %} {{ i.SBE }}, {% endfor %}]
-        }, {
-          name: 'SELS',
-          type: 'column',
-          data: [{% for i in data %} {{ i.SELS }}, {% endfor %}]
-        },{
-          name: 'SETS',
-          type: 'column',
-          data: [{% for i in data %} {{ i.SETS }}, {% endfor %}]
-        },
-        {
-          name: 'SLASS',
-          type: 'column',
-          data: [{% for i in data %} {{ i.SLASS }}, {% endfor %}]
-        },
-        {
-          name: 'SPPH',
-          type: 'column',
-          data: [{% for i in data %} {{ i.SPPH }}, {% endfor %}]
-        },
-         {
-          name: 'Total',
-          type: 'line',
-          data: [{% for i in data %} {{ i.sections }}, {% endfor %}]
-        }],
-          chart: {
-          height: 350,
-          type: 'line',
-          stacked: false
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          width: [1, 1, 4]
-        },
-        title: {
-          text: 'ClassSize Distribution',
-          align: 'left',
-          offsetX: 110
-        },
-        xaxis: {
-          categories: [{% for i in data %} '{{ i.Classsize }}', {% endfor %}],
-        },
-        yaxis: [
-          {
-            axisTicks: {
-              show: true,
-            },
-            axisBorder: {
-              show: false,
-              color: '#008FFB'
-            },
-            labels: {
-              style: {
-                colors: '#008FFB',
-              }
-            },
-            title: {
-              text: "",
-              style: {
-                color: '#008FFB',
-              }
-            },
-
-          },
-         
-          {
-            seriesName: 'ClassSize',
-            opposite: true,
-            axisTicks: {
-              show: true,
-            },
-            axisBorder: {
-              show: false,
-              color: '#FEB019'
-            },
-            labels: {
-              style: {
-                colors: '#008FFB',
-              },
-            },
-            title: {
-              text: "",
-              style: {
-                color: '#FEB019',
-              }
-            }
-          },
-        ],
-        tooltip: {
-          fixed: {
-            enabled: true,
-            position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
-            offsetY: 30,
-            offsetX: 60
-          },
-        },
-        legend: {
-          horizontalAlign: 'left',
-          offsetX: 40
-        }
-        };
-
-        var chart = new ApexCharts(document.querySelector("#myComboChart"), options);
-        chart.render();
 
 $(document).ready(function() {
     //store the value
