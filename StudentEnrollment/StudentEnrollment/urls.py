@@ -21,11 +21,10 @@ from django.urls import path
 from base.views import(
 
     dashboard,
+    req2,
     registerPage,
     loginPage,
     logoutUser,
-    #inputPage,
-    simple_upload
 )
 
 urlpatterns = [
@@ -35,8 +34,9 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('', dashboard, name='home'),
+    path('req2/', req2, name='req2'),
     #path('input/', inputPage, name='input'),
-    path('input/', simple_upload, name='upload')
+    # path('input/', simple_upload, name='upload')
 ]
 
 if settings.DEBUG:

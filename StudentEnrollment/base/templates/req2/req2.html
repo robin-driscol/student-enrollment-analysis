@@ -1,0 +1,239 @@
+<!-- This is the dashboard page -->
+<!-- The base.html is extended from the folder templates(outside the base folder) -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<span>Hello, {{request.user}}</span>
+<span><a href="{% url 'logout' %}">Logout</a></span>
+
+<br>
+
+<div class="container">
+  <br>
+
+  <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Line Chart
+    </div>
+    <div id="myLineChart"></div>
+  </div>
+
+    <br>
+  
+  <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Combo Chart
+    </div>
+    <div id="myComboChart"></div>
+  </div>
+  <!-- <div id="myComboChart"></div> -->
+
+<br>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="white-box shadow">
+            <div class="d-md-flex mb-3">
+                <h3 class="box-title mb-0">Classroom Requirement</h3>
+                <div class="col-md-3 col-sm-4 col-xs-6 ms-auto">
+                    <form method="POST" action="">
+                      {% csrf_token %}
+                      <select name="dropdown2" class="form-select shadow-none row border-top">
+                        <option disabled selected>Please choose a semester</option>
+                        <option>Spring2021</option>
+                        <option>Summer2021</option>
+                        <option>Autumn2021</option>
+                    </select>
+                    <input class="btn btn-dark mt-1" type="submit" value="Submit here">
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table no-wrap">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">Enrollment</th>
+                            <th class="border-top-0">SBE</th>
+                            <th class="border-top-0">SELS</th>
+                            <th class="border-top-0">SETS</th>
+                            <th class="border-top-0">SLASS</th>
+                            <th class="border-top-0">SPPH</th>
+                            <th class="border-top-0">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in data %}
+                      <tr>
+                        <td>{{i.Classsize}}</td>
+                        <td>{{i.SBE}}</td>
+                        <td>{{i.SELS}}</td>
+                        <td>{{i.SETS}}</td>
+                        <td>{{i.SLASS}}</td>
+                        <td>{{i.SPPH}}</td>
+                        <td>{{i.sections}}</td>
+                     </tr>
+                      {% endfor %}
+                          
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+//Line Chart integration
+var options = {
+          series: [{
+            name: "Desktops",
+            data: [{% for i in data %} {{ i.sections }}, {% endfor %}]
+        }],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: '',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: [],
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myLineChart"), options);
+        chart.render();
+      
+
+
+//Combo Chart
+var options = {
+          series: [{
+          name: 'SBE',
+          type: 'column',
+          data: [{% for i in data %} {{ i.SBE }}, {% endfor %}]
+        }, {
+          name: 'SELS',
+          type: 'column',
+          data: [{% for i in data %} {{ i.SELS }}, {% endfor %}]
+        },{
+          name: 'SETS',
+          type: 'column',
+          data: [{% for i in data %} {{ i.SETS }}, {% endfor %}]
+        },
+        {
+          name: 'SLASS',
+          type: 'column',
+          data: [{% for i in data %} {{ i.SLASS }}, {% endfor %}]
+        },
+        {
+          name: 'SPPH',
+          type: 'column',
+          data: [{% for i in data %} {{ i.SPPH }}, {% endfor %}]
+        },
+         {
+          name: 'Total',
+          type: 'line',
+          data: [{% for i in data %} {{ i.sections }}, {% endfor %}]
+        }],
+          chart: {
+          height: 350,
+          type: 'line',
+          stacked: false
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          width: [1, 1, 4]
+        },
+        title: {
+          text: 'ClassSize Distribution',
+          align: 'left',
+          offsetX: 110
+        },
+        xaxis: {
+          categories: [{% for i in data %} '{{ i.Classsize }}', {% endfor %}],
+        },
+        yaxis: [
+          {
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#008FFB'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              }
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#008FFB',
+              }
+            },
+
+          },
+         
+          {
+            seriesName: 'ClassSize',
+            opposite: true,
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#FEB019'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              },
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#FEB019',
+              }
+            }
+          },
+        ],
+        tooltip: {
+          fixed: {
+            enabled: true,
+            position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
+            offsetY: 30,
+            offsetX: 60
+          },
+        },
+        legend: {
+          horizontalAlign: 'left',
+          offsetX: 40
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myComboChart"), options);
+        chart.render();
+</script>
+
+{% endblock content %}

@@ -21,17 +21,24 @@
       </a>
       <div class="dropdown-menu">
         <a class="dropdown-item" href="#">Home</a>
-        <a class="dropdown-item" href="#">Link</a>
+        <a class="dropdown-item" href="#">Req 2</a>
         <a class="dropdown-item" href="#">Link</a>
       </div>
     </li>
   </ul>
+
   <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
     <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <a class="nav-link" href="#">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" href="#">
               <img src="{% static 'profile_icon.png' %}" width="40" height="40" class="img-profile">
             </a>
+            <div class="dropdown-menu">
+              <a>Hello, {{request.user}}</a>
+              <br>
+              <span><a href="{% url 'logout' %}">Logout</a></span>
+              
+            </div>
         </li>
     </ul>
 </div>
@@ -77,5 +84,3 @@
     </div>
   </div>
 </section>
-
-<img src="{% static 'profile_icon.png' %}" width="40" height="40" class="img-profile">

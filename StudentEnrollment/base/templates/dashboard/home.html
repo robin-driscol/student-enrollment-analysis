@@ -4,76 +4,112 @@
 
 {% block content %}
 
-<span >Hello, {{request.user}}</span>
+<span>Hello, {{request.user}}</span>
 <span><a href="{% url 'logout' %}">Logout</a></span>
-
-<div class="container">
-  <div class="container fluid">
-    <div class="col-md-4 m-5" style="margin-right: 25%">
-      <p>List</p>
-      <p>List</p>
-      <p>List</p>
-    </div>
-  </div>
-</div>
 
 <br>
 
 <div class="container">
-
-  <h5>Bar Chart</h5>  
+  <br>
+  
   <!-- <canvas id="myChart"></canvas> -->
-  <div id="myBarChart"></div>
+  <!-- <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Classroom Requirements(Bar Chart)
+    </div>
+    <div id="myBarChart"></div>
+  </div> -->
+  <!-- <div id="myBarChart"></div> -->
   <br>
-
-  <h5>Pie Chart</h5>
-  <!-- <canvas id="myPieChart"></canvas> -->
-  <div id="myPieChart"></div>
-  <br>
-
-  <h5>Line Chart</h5>
-  <!-- <canvas id="myLineChart"></canvas> -->
-  <div id="myLineChart"></div>
-  <br>
-
-  <h5>Area Chart</h5>
-  <!-- <canvas id="myAreaChart"></canvas> -->
-  <div id="myAreaChart"></div>
+  <div class="row">
+    <div class="card shadow" style="height: 400px; width: 400px;">
+      <div class="card-body font-weight-bold">
+        Classroom Requirements(Pie Chart)
+      </div>
+      <div id="myPieChart"></div>
+    </div>
+    <!-- <div id="myPieChart"></div> -->
     <br>
-  <h5>Combo Chart</h5>
-  <div id="myComboChart"></div>
+  
+    <div class="card shadow" style="height: 400px; width: 400px;">
+      <div class="card-body font-weight-bold">
+        Classroom Requirements(Pie Chart)
+      </div>
+      <div id="myPieChart2"></div>
+    </div>
+  </div>
+  
+  <!-- <canvas id="myPieChart"></canvas> -->
+
+
+  
+  <!-- <canvas id="myLineChart"></canvas> -->
+  <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Line Chart
+    </div>
+    <div id="myLineChart"></div>
+  </div>
+  <!-- <div id="myLineChart"></div> -->
+  <br>
+
+  
+  <!-- <canvas id="myAreaChart"></canvas> -->
+  <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Area Chart
+    </div>
+    <div id="myAreaChart"></div>
+  </div>
+  <!-- <div id="myAreaChart"></div> -->
+    <br>
+  
+  <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Combo Chart
+    </div>
+    <div id="myComboChart"></div>
+  </div>
+  <!-- <div id="myComboChart"></div> -->
 
 <br>
 
 <div class="row">
     <div class="col-md-12 col-lg-12 col-sm-12">
-        <div class="white-box">
+        <div class="white-box shadow">
             <div class="d-md-flex mb-3">
-                <h3 class="box-title mb-0">Recent sales</h3>
+                <h3 class="box-title mb-0">Classroom Requirement</h3>
                 <div class="col-md-3 col-sm-4 col-xs-6 ms-auto">
-                    <select class="form-select shadow-none row border-top">
-                        <option>Spring 2021</option>
-                        <option>Summer 2021</option>
-                        <option>Autumn 2021</option>
+                    <form method="POST" action="">
+                      {% csrf_token %}
+                      <select name="dropdown" class="form-select shadow-none row border-top">
+                        <option disabled selected>Please choose a semester</option>
+                        <option>Spring2021</option>
+                        <option>Summer2021</option>
+                        <option>Autumn2021</option>
                     </select>
+                    <input class="btn btn-dark mt-1" type="submit" value="Submit here">
+                    </form>
                 </div>
             </div>
             <div class="table-responsive">
                 <table class="table no-wrap">
                     <thead>
                         <tr>
-                            <th class="border-top-0">#</th>
-                            <th class="border-top-0">Room capacity</th>
-                            <th class="border-top-0">Enrolled</th>
+                            <th class="border-top-0">Class Size</th>
+                            <th class="border-top-0">Sections</th>
+                            <th class="border-top-0">Class room 6</th>
+                            <th class="border-top-0">Class room 7</th>
                            
                         </tr>
                     </thead>
                     <tbody>
-                      {% for ClassSize in ClassSizes %}
+                      {% for i in data %}
                       <tr>
-                        <td>{{ ClassSize.course_id }}</td>
-                        <td class="txt-oflo">{{ ClassSize.room_capacity }}</td>
-                        <td>{{ ClassSize.enrolled }}</td>
+                        <td>{{i.range}}</td>
+                        <td>{{ i.sections}}</td>
+                        <td class="txt-oflo">{{ i.classize_6 }}</td>
+                        <td>{{i.classize_7 }}</td>
                      </tr>
                       {% endfor %}
                           
@@ -92,11 +128,11 @@ var options = {
     type: 'bar'
   },
   series: [{
-    name: 'sales',
-    data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
+    name: 'capacity',
+    data: [{% for i in data %} {{ i.classize_6 }}, {% endfor %}]
   }],
   xaxis: {
-    categories: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}]
+    categories: [{% for i in data %} '{{ i.range }}', {% endfor %}]
   }
 }
 
@@ -107,24 +143,33 @@ chart.render();
 
 // Pie Chart integration
 var options = {
-          series: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}],
+          series: [{% for i in data %} {{ i.classize_6 }}, {% endfor %}],
           chart: {
           type: 'pie',
         },
-        labels: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}],
-    
+        labels: [{% for i in data %} '{{ i.range }}', {% endfor %}],
         };
 
         var chart = new ApexCharts(document.querySelector("#myPieChart"), options);
         chart.render();
-      
+
+var options = {
+          series: [{% for i in data %} {{ i.classize_7 }}, {% endfor %}],
+          chart: {
+          type: 'pie',
+        },
+        labels: [{% for i in data %} '{{ i.range }}', {% endfor %}],
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myPieChart2"), options);
+        chart.render();
 
 
 //Line Chart integration
 var options = {
           series: [{
             name: "Desktops",
-            data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
+            data: []
         }],
           chart: {
           height: 350,
@@ -150,7 +195,7 @@ var options = {
           },
         },
         xaxis: {
-          categories: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}],
+          categories: [],
         }
         };
 
@@ -164,10 +209,10 @@ var options = {
 var options = {
           series: [{
           name: 'series1',
-          data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
+          data: []
         }, {
           name: 'series2',
-          data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
+          data: []
         }],
           chart: {
           height: 350,
@@ -181,7 +226,7 @@ var options = {
           curve: 'straight'
         },
         xaxis: {
-          categories: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}]
+          categories: []
         },
         tooltip: {
           
@@ -197,11 +242,11 @@ var options = {
           series: [{
           name: 'Quantity',
           type: 'column',
-          data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
+          data: []
         }, {
           name: 'Quantity',
           type: 'line',
-          data: [{% for ClassSize in ClassSizes %} {{ ClassSize.enrolled }}, {% endfor %}]
+          data: []
         }],
           chart: {
           height: 350,
@@ -217,9 +262,9 @@ var options = {
           enabled: true,
           enabledOnSeries: [1]
         },
-        labels: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}],
+        labels: [],
         xaxis: {
-            categories: [{% for ClassSize in ClassSizes %} '{{ ClassSize.room_capacity }}', {% endfor %}]
+            categories: []
         },
         yaxis: [{
           title: {
