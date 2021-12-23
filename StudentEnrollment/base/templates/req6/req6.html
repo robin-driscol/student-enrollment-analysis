@@ -25,6 +25,23 @@
 
 <br>
 
+<div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Area Chart
+    </div>
+    <div id="myChart"></div>
+  </div>
+
+<br>
+
+<div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Combo Chart
+    </div>
+    <div id="myChart2"></div>
+  </div>
+
+
 <div class="row">
     <div class="col-md-12 col-lg-12 col-sm-12">
         <div class="white-box shadow">
@@ -72,18 +89,129 @@
 
 
 <script>
-//Line Chart integration
+//Combo Chart
 var options = {
-  chart: {
-    height: 350,
-    type: "line",
-    stacked: false
-  },
-  dataLabels: {
-    enabled: false
-  },
-  colors: ["#FF1654", "#247BA0"],
-  series: [
+          series: [{
+          name: 'SBE',
+          type: 'column',
+          data: [{% for i in data %} {{ i.sbe }}, {% endfor %}]
+        }, {
+          name: 'SELS',
+          type: 'column',
+          data: [{% for i in data %} {{ i.sels }}, {% endfor %}]
+        },{
+          name: 'SETS',
+          type: 'column',
+          data: [{% for i in data %} {{ i.sets }}, {% endfor %}]
+        },
+        {
+          name: 'SLASS',
+          type: 'column',
+          data: [{% for i in data %} {{ i.slass }}, {% endfor %}]
+        },
+        {
+          name: 'SPPH',
+          type: 'column',
+          data: [{% for i in data %} {{ i.spph }}, {% endfor %}]
+        },
+         {
+          name: 'Total',
+          type: 'line',
+          data: [{% for i in data %} {{ i.total }}, {% endfor %}]
+        }],
+          chart: {
+          height: 350,
+          type: 'line',
+          stacked: false
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          width: [1, 1, 4]
+        },
+        title: {
+          text: 'IUB Revenue and Change %',
+          align: 'left',
+          offsetX: 110
+        },
+        xaxis: {
+          categories: [{% for i in data %} '{{ i.semester }}', {% endfor %}],
+        },
+        yaxis: [
+          {
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#008FFB'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              }
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#008FFB',
+              }
+            },
+
+          },
+         
+          {
+            seriesName: 'ClassSize',
+            opposite: true,
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#FEB019'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              },
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#FEB019',
+              }
+            }
+          },
+        ],
+        tooltip: {
+          fixed: {
+            enabled: true,
+            position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
+            offsetY: 30,
+            offsetX: 60
+          },
+        },
+        legend: {
+          horizontalAlign: 'left',
+          offsetX: 40
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChart2"), options);
+        chart.render();
+
+
+
+
+
+
+
+
+
+//Stacked Area Chart
+var options = {
+    series: [
     {
       name: "SBE",
       data: [{% for i in data %} {{ i.sbe }}, {% endfor %}]
@@ -100,82 +228,105 @@ var options = {
       name: "SLASS",
       data: [{% for i in data %} {{ i.slass }}, {% endfor %}]
     },
-       {
-      name: "SPPH",
-      data: []
-    }
-    
-  ],
-  stroke: {
-    width: [4, 4]
-  },
-  plotOptions: {
-    bar: {
-      columnWidth: "20%"
-    }
-  },
-  xaxis: {
-    categories: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
-  },
-  yaxis: [
     {
-      axisTicks: {
-        show: true
-      },
-      axisBorder: {
-        show: true,
-        color: "#FF1654"
-      },
-      labels: {
-        style: {
-          colors: "#FF1654"
-        }
-      },
-      title: {
-        text: "Series A",
-        style: {
-          color: "#FF1654"
-        }
-      }
+      name: "SPPH",
+      data: [{% for i in data %} {{ i.spph }}, {% endfor %}]
     },
     {
-      opposite: true,
-      axisTicks: {
-        show: true
-      },
-      axisBorder: {
-        show: true,
-        color: "#247BA0"
-      },
-      labels: {
-        style: {
-          colors: "#247BA0"
-        }
-      },
-      title: {
-        text: "Series B",
-        style: {
-          color: "#247BA0"
-        }
-      }
+      name: "Total",
+      data: [{% for i in data %} {{ i.total }}, {% endfor %}]
     }
-  ],
-  tooltip: {
-    shared: false,
-    intersect: true,
-    x: {
-      show: false
+    
+    ],
+        chart: {
+          height: 350,
+          stacked: true,
+          type: 'area'
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        title: {
+          text: 'Revenue Distribution among the schools',
+          align: 'left'
+        },
+        xaxis: {
+          categories: [{% for i in data %} "{{ i.semester }}", {% endfor %}]
+        },
+        tooltip: {
+          x: {
+            
+          },
+        },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChart"), options);
+        chart.render();
+
+//Line Chart integration
+
+var options = {
+    series: [
+    {
+      name: "SBE",
+      data: [{% for i in data %} {{ i.sbe }}, {% endfor %}]
+    },
+    {
+      name: "SELS",
+      data: [{% for i in data %} {{ i.sels }}, {% endfor %}]
+    },
+     {
+      name: "SETS",
+      data: [{% for i in data %} {{ i.sets }}, {% endfor %}]
+    },
+     {
+      name: "SLASS",
+      data: [{% for i in data %} {{ i.slass }}, {% endfor %}]
+    },
+    {
+      name: "SPPH",
+      data: [{% for i in data %} {{ i.spph }}, {% endfor %}]
+    },
+    {
+      name: "Total",
+      data: [{% for i in data %} {{ i.total }}, {% endfor %}]
     }
-  },
-  legend: {
-    horizontalAlign: "left",
-    offsetX: 40
-  }
-};
+   
+    ],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Revenue Trend of the schools',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: [{% for i in data %} "{{ i.semester }}", {% endfor %}],
+        }
+        };
 
-var chart = new ApexCharts(document.querySelector("#myLineChart"), options);
+        var chart = new ApexCharts(document.querySelector("#myLineChart"), options);
+        chart.render();
 
-chart.render();
 
 
 

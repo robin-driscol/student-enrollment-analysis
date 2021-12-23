@@ -241,15 +241,15 @@ order by ranges.nrange asc
 def req6(request):
     cursor = connection.cursor()
     cursor.execute('''
-                 with tbl(Semester, Semester_num, year, SBE, SLASS, sets, SPPH, SELS, total) as 
-(select distinct st.csemesterid "Semester", sem.nsemesternum "Semester_Num",sem.cyearid "year",
+                with tbl(Semester, Semester_num, year, SBE, SLASS, sets, SPPH, SELS, total) as 
+(select distinct st.csemesterid "semester", sem.nsemesternum "semester_Num",sem.cyearid "year",
 (sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SBE')) as "SBE",
 (sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SLASS')) as "SLASS",
 (sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid like 'SETS'
                                     or ct.cdepartmentid like 'PhySci'
                                     or ct.cdepartmentid like'CSE'
                                     or ct.cdepartmentid like 'EEE')) as "SETS",
-(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SPPH')) as "SPPH",
+coalesce((sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SPPH')),0) as "SPPH",
 (sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SELS')) as "SELS",
 (sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SBE')) +
 (sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SLASS')) +
@@ -257,14 +257,14 @@ def req6(request):
                                     or ct.cdepartmentid like 'PhySci'
                                     or ct.cdepartmentid like'CSE'
                                     or ct.cdepartmentid like 'EEE'))+
-(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SPPH'))+
+coalesce((sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SPPH')),0)+
 (sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SELS')) as "Total"
 from section_t st, course_t ct, semester_t sem 
 where st.ccourseid = ct.ccourseid and st.csemesterid = sem.csemesterid 
 group by st.csemesterid, sem.nsemesternum, sem.cyearid
 order by sem.cyearid, sem.nsemesternum asc)
 select * ,
-(total - LAG(total,1) OVER (ORDER BY year, semester_num)) * 100 / LAG(total,1) OVER (ORDER BY year, semester_num) as "Difference" 
+coalesce((total - LAG(total,1) OVER (ORDER BY year, semester_num)) * 100 / LAG(total,1) OVER (ORDER BY year, semester_num),0) as "Difference" 
 from tbl order by year, semester_num''')
 
 
