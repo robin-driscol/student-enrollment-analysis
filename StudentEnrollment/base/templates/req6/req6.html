@@ -1,0 +1,198 @@
+<!-- This is the dashboard page -->
+<!-- The base.html is extended from the folder templates(outside the base folder) -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">Revenue of IUB</h1>
+
+<!-- <span>Hello, {{request.user}}</span>
+<span><a href="{% url 'logout' %}">Logout</a></span> -->
+
+<br>
+
+<div class="container">
+
+    <br>
+  
+  <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      line Chart
+    </div>
+    <div id="myLineChart"></div>
+  </div>
+  <!-- <div id="myComboChart"></div> -->
+
+<br>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="white-box shadow">
+            <div class="d-md-flex mb-3">
+                <h3 class="box-title mb-0">Revenue of IUB</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table no-wrap">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0"></th>
+                            <th class="border-top-0">Semester no.</th>
+                            <th class="border-top-0">Year</th>
+                            <th class="border-top-0">SBE</th>
+                            <th class="border-top-0">SELS</th>
+                            <th class="border-top-0">SETS</th>
+                            <th class="border-top-0">SLASS</th>
+                            <th class="border-top-0">SPPH</th>
+                            <th class="border-top-0">Total</th>
+                            <th class="border-top-0">Difference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in data %}
+                      <tr>
+                        <td>{{i.semester}}</td>
+                        <td>{{i.semester_num}}</td>
+                        <td>{{i.year}}</td>
+                        <td>{{i.sbe}}</td>
+                        <td>{{i.sels}}</td>
+                        <td>{{i.sets}}</td>
+                        <td>{{i.slass}}</td>
+                        <td>{{i.spph}}</td>
+                        <td>{{i.total}}</td>
+                        <td>{{i.Difference}}</td>
+                     </tr>
+                      {% endfor %}
+                          
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+//Line Chart integration
+var options = {
+  chart: {
+    height: 350,
+    type: "line",
+    stacked: false
+  },
+  dataLabels: {
+    enabled: false
+  },
+  colors: ["#FF1654", "#247BA0"],
+  series: [
+    {
+      name: "SBE",
+      data: [{% for i in data %} {{ i.sbe }}, {% endfor %}]
+    },
+    {
+      name: "SELS",
+      data: [{% for i in data %} {{ i.sels }}, {% endfor %}]
+    },
+     {
+      name: "SETS",
+      data: [{% for i in data %} {{ i.sets }}, {% endfor %}]
+    },
+     {
+      name: "SLASS",
+      data: [{% for i in data %} {{ i.slass }}, {% endfor %}]
+    },
+       {
+      name: "SPPH",
+      data: []
+    }
+    
+  ],
+  stroke: {
+    width: [4, 4]
+  },
+  plotOptions: {
+    bar: {
+      columnWidth: "20%"
+    }
+  },
+  xaxis: {
+    categories: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
+  },
+  yaxis: [
+    {
+      axisTicks: {
+        show: true
+      },
+      axisBorder: {
+        show: true,
+        color: "#FF1654"
+      },
+      labels: {
+        style: {
+          colors: "#FF1654"
+        }
+      },
+      title: {
+        text: "Series A",
+        style: {
+          color: "#FF1654"
+        }
+      }
+    },
+    {
+      opposite: true,
+      axisTicks: {
+        show: true
+      },
+      axisBorder: {
+        show: true,
+        color: "#247BA0"
+      },
+      labels: {
+        style: {
+          colors: "#247BA0"
+        }
+      },
+      title: {
+        text: "Series B",
+        style: {
+          color: "#247BA0"
+        }
+      }
+    }
+  ],
+  tooltip: {
+    shared: false,
+    intersect: true,
+    x: {
+      show: false
+    }
+  },
+  legend: {
+    horizontalAlign: "left",
+    offsetX: 40
+  }
+};
+
+var chart = new ApexCharts(document.querySelector("#myLineChart"), options);
+
+chart.render();
+
+
+
+$(document).ready(function() {
+    //store the value
+    if (localStorage.selectVal) {
+    // Select the value stored
+        $('select').val( localStorage.selectVal );
+    }
+});
+
+  //on refresh keep it persistent
+$('select').on('change', function(){
+    var currentVal = $(this).val();
+    localStorage.setItem('selectVal', currentVal );
+});
+
+</script>
+
+{% endblock content %}

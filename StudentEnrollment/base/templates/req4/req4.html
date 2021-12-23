@@ -1,0 +1,104 @@
+<!-- This is the dashboard page -->
+<!-- The base.html is extended from the folder templates(outside the base folder) -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">Available of the resources</h1>
+
+
+<!-- <span>Hello, {{request.user}}</span>
+<span><a href="{% url 'logout' %}">Logout</a></span> -->
+
+<br>
+
+<div class="container">
+<br>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="white-box shadow">
+            <div class="d-md-flex mb-3">
+                <h3 class="box-title mb-0">Available resources</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table no-wrap">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">ClassSize</th>
+                            <th class="border-top-0">IUB resource</th>
+                            <th class="border-top-0">Capacity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in data %}
+                      <tr>
+                        <td>{{i.classsize}}</td>
+                        <td>{{i.iubresource}}</td>
+                        <td>{{i.capacity}}</td>
+                     </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <div class="table-responsive">
+              <table class="table no-wrap">
+                  <thead>
+                      <tr>
+                          <th class="border-top-0">Total IUB resource</th>
+                          <th class="border-top-0">Total capacity</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in data2 %}
+                      <td>{{i.totalresource}}</td>
+                      <td>{{i.totalcapacity}}</td>
+                    {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+          <br>
+          <div class="table-responsive">
+            <table class="table no-wrap">
+                <thead>
+                    <tr>
+                        <th class="border-top-0">Total Capacity with 6 slot 2 days</th>
+                        <th class="border-top-0">Total Capacity with 7 slot 2 days</th>
+                        <th class="border-top-0">Considering 3.5 average course load (6 slot)</th>
+                        <th class="border-top-0">Considering 3.5 average course load (7 slot)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for i in data3 %}
+                    <td>{{i.total6slot}}</td>
+                    <td>{{i.total7slot}}</td>
+                    <td>{{i.total6Avg3}}</td>
+                    <td>{{i.total7Avg3}}</td>
+                  {% endfor %}
+                </tbody>
+            </table>
+        </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+$(document).ready(function() {
+    //store the value
+    if (localStorage.selectVal) {
+    // Select the value stored
+        $('select').val( localStorage.selectVal );
+    }
+});
+
+  //on refresh keep it persistent
+$('select').on('change', function(){
+    var currentVal = $(this).val();
+    localStorage.setItem('selectVal', currentVal );
+});
+</script>
+
+{% endblock content %}

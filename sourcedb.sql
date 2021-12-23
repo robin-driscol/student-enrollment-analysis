@@ -463,7 +463,8 @@ ALTER TABLE public.section_t OWNER TO postgres;
 CREATE TABLE public.semester_t (
     csemesterid character varying(20) NOT NULL,
     csemestername character varying(8),
-    cyearid character varying(4)
+    cyearid character varying(4),
+    nsemesternum integer
 );
 
 
@@ -8587,46 +8588,46 @@ fb5bdc9d-8bc5-4249-b915-5684effb9b67	08:00:00	MW	0	1	1	Autumn2020	SOC499	2200-MS
 -- Data for Name: semester_t; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.semester_t (csemesterid, csemestername, cyearid) FROM stdin;
-Spring2009	Spring	2009
-Summer2009	Summer	2009
-Autumn2009	Autumn	2009
-Spring2010	Spring	2010
-Summer2010	Summer	2010
-Autumn2010	Autumn	2010
-Spring2011	Spring	2011
-Summer2011	Summer	2011
-Autumn2011	Autumn	2011
-Spring2012	Spring	2012
-Summer2012	Summer	2012
-Autumn2012	Autumn	2012
-Spring2013	Spring	2013
-Summer2013	Summer	2013
-Autumn2013	Autumn	2013
-Spring2014	Spring	2014
-Summer2014	Summer	2014
-Autumn2014	Autumn	2014
-Spring2015	Spring	2015
-Summer2015	Summer	2015
-Autumn2015	Autumn	2015
-Spring2016	Spring	2016
-Summer2016	Summer	2016
-Autumn2016	Autumn	2016
-Spring2017	Spring	2017
-Summer2017	Summer	2017
-Autumn2017	Autumn	2017
-Spring2018	Spring	2018
-Summer2018	Summer	2018
-Autumn2018	Autumn	2018
-Spring2019	Spring	2019
-Summer2019	Summer	2019
-Autumn2019	Autumn	2019
-Spring2020	Spring	2020
-Summer2020	Summer	2020
-Autumn2020	Autumn	2020
-Spring2021	Spring	2021
-Autumn2021	Autumn	2021
-Summer2021	Summer	2021
+COPY public.semester_t (csemesterid, csemestername, cyearid, nsemesternum) FROM stdin;
+Spring2009	Spring	2009	1
+Spring2010	Spring	2010	1
+Spring2011	Spring	2011	1
+Spring2012	Spring	2012	1
+Spring2013	Spring	2013	1
+Spring2014	Spring	2014	1
+Spring2015	Spring	2015	1
+Spring2016	Spring	2016	1
+Spring2017	Spring	2017	1
+Spring2018	Spring	2018	1
+Spring2019	Spring	2019	1
+Spring2020	Spring	2020	1
+Spring2021	Spring	2021	1
+Summer2009	Summer	2009	2
+Summer2010	Summer	2010	2
+Summer2011	Summer	2011	2
+Summer2012	Summer	2012	2
+Summer2013	Summer	2013	2
+Summer2014	Summer	2014	2
+Summer2015	Summer	2015	2
+Summer2016	Summer	2016	2
+Summer2017	Summer	2017	2
+Summer2018	Summer	2018	2
+Summer2019	Summer	2019	2
+Summer2020	Summer	2020	2
+Summer2021	Summer	2021	2
+Autumn2009	Autumn	2009	3
+Autumn2010	Autumn	2010	3
+Autumn2011	Autumn	2011	3
+Autumn2012	Autumn	2012	3
+Autumn2013	Autumn	2013	3
+Autumn2014	Autumn	2014	3
+Autumn2015	Autumn	2015	3
+Autumn2016	Autumn	2016	3
+Autumn2017	Autumn	2017	3
+Autumn2018	Autumn	2018	3
+Autumn2019	Autumn	2019	3
+Autumn2020	Autumn	2020	3
+Autumn2021	Autumn	2021	3
 \.
 
 

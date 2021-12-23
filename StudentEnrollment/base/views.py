@@ -163,6 +163,136 @@ where st.csemesterid = %s
 
     return render(request, 'req3/req3.html', {'data': r, 'data2': r2})
 
+
+
+
+
+
+
+
+def req4(request):
+    cursor = connection.cursor()
+    cursor.execute('''
+                 select rt.nroomcapacity "classsize", count(distinct rt2.croomid) "iubresource", rt.nroomcapacity*count(distinct rt2.croomid) "capacity"
+from room_t rt , room_t rt2
+where rt.nroomcapacity = rt2.nroomcapacity
+group by rt.nroomcapacity
+order by rt.nroomcapacity asc''')
+    
+    cursor2 = connection.cursor()
+    cursor2.execute('''
+                    select count(distinct rt.croomid) "totalresource", sum(rt.nroomcapacity) "totalcapacity"
+from room_t rt
+                    ''')
+    
+    cursor3 = connection.cursor()
+    cursor3.execute('''
+                    select sum(rt.nroomcapacity),sum(rt.nroomcapacity)*12 "total6slot",
+sum(rt.nroomcapacity)*14 "total7slot",
+round((sum(rt.nroomcapacity)*12)/(3.5)) "total6Avg3",
+round((sum(rt.nroomcapacity)*14)/(3.5)) "total7Avg3"
+from room_t rt
+                    ''')
+    r = dictfetchall(cursor)
+    r2 = dictfetchall(cursor2)
+    r3 = dictfetchall(cursor3)
+    
+    
+
+    return render(request, 'req4/req4.html', {'data': r, 'data2': r2, 'data3': r3})
+
+def req5(request):
+    semesterID = None
+    if request.method == "POST":
+        semesterID = request.POST.get("dropdown5")
+
+    cursor = connection.cursor()
+    query = """
+    with ranges as (
+    select (generate_series(1,70)) as nrange 
+)
+select ranges.nrange,
+count(st.usectionid) filter (where course_t.cdepartmentid = 'SELS') as "SELS",
+count(st.usectionid) filter (where course_t.cdepartmentid = 'SBE') as "SBE",
+count(st.usectionid) filter (where course_t.cdepartmentid like 'SETS' 
+                                    or course_t.cdepartmentid like 'PhySci'
+                                    or course_t.cdepartmentid like'CSE'
+                                    or course_t.cdepartmentid like 'EEE') as "SETS",
+count(st.usectionid) filter (where course_t.cdepartmentid = 'SLASS') as "SLASS",
+count(st.usectionid) filter (where course_t.cdepartmentid = 'SPPH') as "SPPH",
+count(st.usectionid) filter (where course_t.cdepartmentid = 'SELS') + 
+count(st.usectionid) filter (where course_t.cdepartmentid = 'SBE') + 
+count(st.usectionid) filter (where course_t.cdepartmentid like 'SETS' 
+                                    or course_t.cdepartmentid like 'PhySci'
+                                    or course_t.cdepartmentid like'CSE'
+                                    or course_t.cdepartmentid like 'EEE') +
+count(st.usectionid) filter (where course_t.cdepartmentid = 'SLASS') + 
+count(st.usectionid) filter (where course_t.cdepartmentid = 'SPPH') as "total"
+from section_t st, ranges, course_t
+where st.csemesterid = %s and course_t.ccourseid = st.ccourseid and ranges.nrange = st.nstudentenrolled
+group by ranges.nrange
+order by ranges.nrange asc
+"""
+    cursor.execute(query,(semesterID,))
+    r = dictfetchall(cursor)
+    return render(request, 'req5/req5.html', {'data':r})
+
+
+def req6(request):
+    cursor = connection.cursor()
+    cursor.execute('''
+                 with tbl(Semester, Semester_num, year, SBE, SLASS, sets, SPPH, SELS, total) as 
+(select distinct st.csemesterid "Semester", sem.nsemesternum "Semester_Num",sem.cyearid "year",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SBE')) as "SBE",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SLASS')) as "SLASS",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid like 'SETS'
+                                    or ct.cdepartmentid like 'PhySci'
+                                    or ct.cdepartmentid like'CSE'
+                                    or ct.cdepartmentid like 'EEE')) as "SETS",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SPPH')) as "SPPH",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SELS')) as "SELS",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SBE')) +
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SLASS')) +
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid like 'SETS'
+                                    or ct.cdepartmentid like 'PhySci'
+                                    or ct.cdepartmentid like'CSE'
+                                    or ct.cdepartmentid like 'EEE'))+
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SPPH'))+
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'SELS')) as "Total"
+from section_t st, course_t ct, semester_t sem 
+where st.ccourseid = ct.ccourseid and st.csemesterid = sem.csemesterid 
+group by st.csemesterid, sem.nsemesternum, sem.cyearid
+order by sem.cyearid, sem.nsemesternum asc)
+select * ,
+(total - LAG(total,1) OVER (ORDER BY year, semester_num)) * 100 / LAG(total,1) OVER (ORDER BY year, semester_num) as "Difference" 
+from tbl order by year, semester_num''')
+
+
+    r = dictfetchall(cursor)
+   
+    return render(request, 'req6/req6.html', {'data': r})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def registerPage(request):
     if request.user.is_authenticated:
         return redirect('home')

@@ -1,0 +1,87 @@
+<!-- This is the dashboard page -->
+<!-- The base.html is extended from the folder templates(outside the base folder) -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">Availability and course offering comparison</h1>
+
+
+<!-- <span>Hello, {{request.user}}</span>
+<span><a href="{% url 'logout' %}">Logout</a></span> -->
+
+<br>
+
+<div class="container">
+<br>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="white-box shadow">
+            <div class="d-md-flex mb-3">
+                <h3 class="box-title mb-0">Availability and course offering comparison</h3>
+                <div class="col-md-3 col-sm-4 col-xs-6 ms-auto">
+                    <form method="POST" action="">
+                      {% csrf_token %}
+                      <select name="dropdown5" class="form-select shadow-none row border-top">
+                        <option>Spring2020</option>
+                        <option>Autumn2020</option>
+                        <option>Spring2021</option>
+                        <option>Summer2021</option>
+                        <option>Autumn2021</option>
+                    </select>
+                    <input class="btn btn-dark mt-1" type="submit" value="Submit here">
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table no-wrap">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">Enrollment</th>
+                            <th class="border-top-0">SBE</th>
+                            <th class="border-top-0">SELS</th>
+                            <th class="border-top-0">SETS</th>
+                            <th class="border-top-0">SLASS</th>
+                            <th class="border-top-0">SPPH</th>
+                            <th class="border-top-0">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in data %}
+                      <tr>
+                        <td>{{i.nrange}}</td>
+                        <td>{{i.SBE}}</td>
+                        <td>{{i.SELS}}</td>
+                        <td>{{i.SETS}}</td>
+                        <td>{{i.SLASS}}</td>
+                        <td>{{i.SPPH}}</td>
+                        <td>{{i.total}}</td>
+                     </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+$(document).ready(function() {
+    //store the value
+    if (localStorage.selectVal) {
+    // Select the value stored
+        $('select').val( localStorage.selectVal );
+    }
+});
+
+  //on refresh keep it persistent
+$('select').on('change', function(){
+    var currentVal = $(this).val();
+    localStorage.setItem('selectVal', currentVal );
+});
+</script>
+
+{% endblock content %}
