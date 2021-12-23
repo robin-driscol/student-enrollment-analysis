@@ -2,27 +2,23 @@
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <!-- Brand -->
-  <a class="navbar-brand" href="#">Student Enrollment Analysis</a>
+  <a class="navbar-brand" href="{% url 'home' %}">Student Enrollment Analysis</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-4" aria-controls="navbarSupportedContent-4" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a class="nav-link" href="#">Home</a>
+      <a class="nav-link" href="{% url 'home' %}">Home</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Features</a>
-    </li>
-
     <!-- Dropdown -->
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        Dropdown link
+        Analysis
       </a>
       <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Home</a>
-        <a class="dropdown-item" href="#">Req 2</a>
-        <a class="dropdown-item" href="#">Link</a>
+        <a class="dropdown-item" href="{% url 'req2' %}">Classroom Distribution</a>
+        <a class="dropdown-item" href="{% url 'req3' %}">Usage of the resource</a>
+        <a class="dropdown-item" href="#">Requirement 4</a>
       </div>
     </li>
   </ul>
@@ -34,53 +30,17 @@
               <img src="{% static 'profile_icon.png' %}" width="40" height="40" class="img-profile">
             </a>
             <div class="dropdown-menu">
-              <a>Hello, {{request.user}}</a>
+              <a>Hello {{request.user}}</a>
               <br>
-              <span><a href="{% url 'logout' %}">Logout</a></span>
-              
+              <a href="{% url 'logout' %}">Logout</a>
             </div>
         </li>
     </ul>
 </div>
-
- 
 </nav>
+
 <section>
   <div class="conatiner p-2 bg-light">
     <button type="button" class="btn btn-secondary btn-sm">Button</button>
-  </div>
-</section>
-
-<section class="p-5">
-  <div class="container">
-    <div class="row text-center">
-      <div class="col">
-        <div class="card p-5" style="width: 18rem;">
-          <div class="card-body">
-            <!--<h5 class="card-title">Card title</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card p-5" style="width: 18rem;">
-          <div class="card-body">
-            <!--<h5 class="card-title">Card title</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card p-5" style="width: 18rem;">
-          <div class="card-body">
-            <!--<h5 class="card-title">Card title</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>

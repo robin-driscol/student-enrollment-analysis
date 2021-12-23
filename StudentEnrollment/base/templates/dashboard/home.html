@@ -4,27 +4,28 @@
 
 {% block content %}
 
-<span>Hello, {{request.user}}</span>
-<span><a href="{% url 'logout' %}">Logout</a></span>
+<h1 class="text-center">Dashboard</h1>
+
+
+<!-- <span>Hello, {{request.user}}</span>
+<span><a href="{% url 'logout' %}">Logout</a></span> -->
 
 <br>
 
 <div class="container">
 
   <br>
-  <div class="row">
-    <div class="card shadow" style="height: 400px; width: 400px;">
+  <div class="row d-inline-flex">
+    <div class="card shadow" style="height: 400px;width: 400px;margin-left: 45px;">
       <div class="card-body font-weight-bold">
-        Classroom Requirements(Pie Chart)
+        Classroom Requirements(Class Room 6)
       </div>
       <div id="myPieChart"></div>
     </div>
 
-    <br>
-
-    <div class="card shadow" style="height: 400px; width: 400px;">
+    <div class="card shadow" style="height: 400px;width: 400px;margin-left: 45px;">
       <div class="card-body font-weight-bold">
-        Classroom Requirements(Pie Chart)
+        Classroom Requirements(Class Room 7)
       </div>
       <div id="myPieChart2"></div>
     </div>
@@ -42,7 +43,8 @@
                     <form method="POST" action="">
                       {% csrf_token %}
                       <select name="dropdown" class="form-select shadow-none row border-top">
-                        <option disabled selected>Please choose a semester</option>
+                        <option>Spring2020</option>
+                        <option>Autumn2020</option>
                         <option>Spring2021</option>
                         <option>Summer2021</option>
                         <option>Autumn2021</option>
@@ -59,7 +61,6 @@
                             <th class="border-top-0">Sections</th>
                             <th class="border-top-0">Class room 6</th>
                             <th class="border-top-0">Class room 7</th>
-                           
                         </tr>
                     </thead>
                     <tbody>
@@ -67,11 +68,11 @@
                       <tr>
                         <td>{{i.range}}</td>
                         <td>{{ i.sections}}</td>
-                        <td class="txt-oflo">{{ i.classize_6 }}</td>
+                        <td>{{ i.classize_6 }}</td>
                         <td>{{i.classize_7 }}</td>
                      </tr>
                       {% endfor %}
-                          
+
                     </tbody>
                 </table>
             </div>
@@ -81,26 +82,7 @@
 
 
 <script>
-// Bar Chart integration
-var options = {
-  chart: {
-    type: 'bar'
-  },
-  series: [{
-    name: 'capacity',
-    data: [{% for i in data %} {{ i.classize_6 }}, {% endfor %}]
-  }],
-  xaxis: {
-    categories: [{% for i in data %} '{{ i.range }}', {% endfor %}]
-  }
-}
-
-var chart = new ApexCharts(document.querySelector("#myBarChart"), options);
-
-chart.render();
-
-
-// Pie Chart integration
+// Pie Chart for classsize 6
 var options = {
           series: [{% for i in data %} {{ i.classize_6 }}, {% endfor %}],
           chart: {
@@ -112,6 +94,7 @@ var options = {
         var chart = new ApexCharts(document.querySelector("#myPieChart"), options);
         chart.render();
 
+//pie chart for classsize 7
 var options = {
           series: [{% for i in data %} {{ i.classize_7 }}, {% endfor %}],
           chart: {
@@ -123,123 +106,19 @@ var options = {
         var chart = new ApexCharts(document.querySelector("#myPieChart2"), options);
         chart.render();
 
+$(document).ready(function() {
+    //store the value
+    if (localStorage.selectVal) {
+    // Select the value stored
+        $('select').val( localStorage.selectVal );
+    }
+});
 
-//Line Chart integration
-var options = {
-          series: [{
-            name: "Desktops",
-            data: []
-        }],
-          chart: {
-          height: 350,
-          type: 'line',
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        title: {
-          text: '',
-          align: 'left'
-        },
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: [],
-        }
-        };
-
-        var chart = new ApexCharts(document.querySelector("#myLineChart"), options);
-        chart.render();
-      
-
-//Area Chart Integration
-
-      
-var options = {
-          series: [{
-          name: 'series1',
-          data: []
-        }, {
-          name: 'series2',
-          data: []
-        }],
-          chart: {
-          height: 350,
-          type: 'area',
-          stacked: true
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        xaxis: {
-          categories: []
-        },
-        tooltip: {
-          
-        },
-        };
-
-        var chart = new ApexCharts(document.querySelector("#myAreaChart"), options);
-        chart.render();
-      
-
-//Combo Chart
-var options = {
-          series: [{
-          name: 'Quantity',
-          type: 'column',
-          data: []
-        }, {
-          name: 'Quantity',
-          type: 'line',
-          data: []
-        }],
-          chart: {
-          height: 350,
-          type: 'line',
-        },
-        stroke: {
-          width: [0, 4]
-        },
-        title: {
-          text: ''
-        },
-        dataLabels: {
-          enabled: true,
-          enabledOnSeries: [1]
-        },
-        labels: [],
-        xaxis: {
-            categories: []
-        },
-        yaxis: [{
-          title: {
-            text: 'Product',
-          },
-        
-        }, {
-          opposite: true,
-          title: {
-            text: 'Product'
-          }
-        }]
-        };
-
-        var chart = new ApexCharts(document.querySelector("#myComboChart"), options);
-        chart.render();
+  //on refresh keep it persistent
+$('select').on('change', function(){
+    var currentVal = $(this).val();
+    localStorage.setItem('selectVal', currentVal );
+});
 
 </script>
 

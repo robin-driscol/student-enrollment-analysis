@@ -4,8 +4,11 @@
 
 {% block content %}
 
-<span>Hello, {{request.user}}</span>
-<span><a href="{% url 'logout' %}">Logout</a></span>
+<h1 class="text-center">Usage of the resources</h1>
+
+
+<!-- <span>Hello, {{request.user}}</span>
+<span><a href="{% url 'logout' %}">Logout</a></span> -->
 
 <br>
 
@@ -21,7 +24,8 @@
                     <form method="POST" action="">
                       {% csrf_token %}
                       <select name="dropdown3" class="form-select shadow-none row border-top">
-                        <option disabled selected>Please choose a semester</option>
+                        <option>Spring2020</option>
+                        <option>Autumn2020</option>
                         <option>Spring2021</option>
                         <option>Summer2021</option>
                         <option>Autumn2021</option>
@@ -174,6 +178,20 @@ var options = {
 
         var chart = new ApexCharts(document.querySelector("#myComboChart"), options);
         chart.render();
+
+$(document).ready(function() {
+    //store the value
+    if (localStorage.selectVal) {
+    // Select the value stored
+        $('select').val( localStorage.selectVal );
+    }
+});
+
+  //on refresh keep it persistent
+$('select').on('change', function(){
+    var currentVal = $(this).val();
+    localStorage.setItem('selectVal', currentVal );
+});
 </script>
 
 {% endblock content %}
