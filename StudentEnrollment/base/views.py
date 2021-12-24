@@ -24,12 +24,11 @@ def dashboard(request):
     if request.method == "POST":
         semesterID = request.POST.get("dropdown")
 
-    data1 = (semesterID, semesterID, semesterID)
     cursor = connection.cursor()
     cursor.execute('''select ranges."range" "range", 
-count(section_t.usectionid) filter (where section_t.csemesterid = %s) as "sections", 
-round((count(section_t.usectionid) filter (where section_t.csemesterid = %s))/12::numeric,2) as "classize_6", 
-round((count(section_t.usectionid) filter (where section_t.csemesterid = %s))/14::numeric,2) as "classize_7"
+count((section_t.usectionid)) as "sections", 
+round((count(section_t.usectionid))/12::numeric,2) as "classize_6", 
+round((count(section_t.usectionid))/14::numeric,2) as "classize_7"
                         from
                         (
                             select 1 minRange, 10 maxRange, '1-10' "range"
@@ -38,16 +37,21 @@ round((count(section_t.usectionid) filter (where section_t.csemesterid = %s))/14
                             union all
                             select 21, 30, '21-30'
                             union
-                            select 31, 40, '31-40'
+                            select 31, 35, '31-35'
+                            union all
+                            select 36, 40, '36-40'
                             union all
                             select 41, 50, '41-50'
                             union all
-                            select 51, 60, '51-60'
+                            select 51, 55, '51-65'
+                            union all
+                            select 56, 65, '51-65'
                         ) as ranges
                         left join section_t
-                            on section_t.nstudentenrolled between ranges.minRange and ranges.maxRange  
+                            on section_t.nstudentenrolled between ranges.minRange and ranges.maxRange
+                        where section_t.csemesterid like %s
                         group by ranges.range
-                        order by ranges.range''', data1)
+                        order by ranges.range''', (semesterID,))
     
     r = dictfetchall(cursor)
 
