@@ -43,13 +43,13 @@ round((count(section_t.usectionid))/14::numeric,2) as "classize_7"
                             union all
                             select 41, 50, '41-50'
                             union all
-                            select 51, 55, '51-65'
+                            select 51, 55, '51-55'
                             union all
-                            select 56, 65, '51-65'
+                            select 56, 65, '56-65'
                         ) as ranges
                         left join section_t
                             on section_t.nstudentenrolled between ranges.minRange and ranges.maxRange
-                        where section_t.csemesterid like %s
+                        where section_t.csemesterid = 'Spring2021'
                         group by ranges.range
                         order by ranges.range''', (semesterID,))
     
@@ -177,9 +177,8 @@ where st.csemesterid = %s
 def req4(request):
     cursor = connection.cursor()
     cursor.execute('''
-                 select rt.nroomcapacity "classsize", count(distinct rt2.croomid) "iubresource", rt.nroomcapacity*count(distinct rt2.croomid) "capacity"
-from room_t rt , room_t rt2
-where rt.nroomcapacity = rt2.nroomcapacity
+                 select rt.nroomcapacity "classsize", count(distinct rt.croomid) "iubresource", rt.nroomcapacity*count(distinct rt.croomid) "capacity"
+from room_t rt
 group by rt.nroomcapacity
 order by rt.nroomcapacity asc''')
     
@@ -197,13 +196,52 @@ round((sum(rt.nroomcapacity)*12)/(3.5)) "total6Avg3",
 round((sum(rt.nroomcapacity)*14)/(3.5)) "total7Avg3"
 from room_t rt
                     ''')
+
+    semesterID = None
+    if request.method == "POST":
+        semesterID = request.POST.get("dropdown5")              
+
+    cursor4 = connection.cursor()
+    cursor4.execute("""
+with tbl(ranges, sec, cls6, cls7) as (select ranges."range" "range", 
+count((section_t.usectionid)) as "sections", 
+round((count(section_t.usectionid))/12::numeric,2) as "classize_6", 
+round((count(section_t.usectionid))/14::numeric,2) as "classize_7"
+                        from
+                        (
+                            select 1 minRange, 20 maxRange, 20 "range"
+                            union all
+                            select 21, 25, 25
+                            union
+                            select 26, 30, 30
+                            union all
+                            select 31, 35, 35
+                            union all
+                            select 36, 39, 36
+                            union all
+                            select 40, 40, 40
+                            union all
+                            select 50, 70, 50
+                        ) as ranges
+                        left join section_t
+                            on section_t.nstudentenrolled between ranges.minRange and ranges.maxRange
+                        where section_t.csemesterid like %s
+                        group by ranges.range
+                        order by ranges.range)
+select rt.nroomcapacity "room", count(distinct rt.croomid) "iubresource", tbl.cls6, tbl.cls6 - count(distinct rt.croomid) "diff"
+from room_t rt
+right join tbl on 
+rt.nroomcapacity = tbl.ranges
+group by rt.nroomcapacity, tbl.cls6
+order by rt.nroomcapacity asc""", (semesterID,))               
     r = dictfetchall(cursor)
     r2 = dictfetchall(cursor2)
     r3 = dictfetchall(cursor3)
+    r4 = dictfetchall(cursor4)
     
     
 
-    return render(request, 'req4/req4.html', {'data': r, 'data2': r2, 'data3': r3})
+    return render(request, 'req4/req4.html', {'data': r, 'data2': r2, 'data3': r3, 'data4': r4})
 
 def req5(request):
     semesterID = None
