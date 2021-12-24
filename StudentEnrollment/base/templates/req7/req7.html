@@ -1,0 +1,420 @@
+<!-- This is the dashboard page -->
+<!-- The base.html is extended from the folder templates(outside the base folder) -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 class="text-center">Revenue in Engineering School:</h1>
+
+<!-- <span>Hello, {{request.user}}</span>
+<span><a href="{% url 'logout' %}">Logout</a></span> -->
+
+<br>
+
+<div class="container">
+
+    <br>
+  
+  <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      line Chart
+    </div>
+    <div id="myLineChart"></div>
+  </div>
+  <!-- <div id="myComboChart"></div> -->
+
+<br>
+
+<div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Area Chart
+    </div>
+    <div id="myChart"></div>
+  </div>
+
+<br>
+
+<div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Combo Chart
+    </div>
+    <div id="myChart2"></div>
+  </div>
+
+  <div class="card shadow">
+    <div class="card-body font-weight-bold">
+      Combo Chart
+    </div>
+    <div id="myChart3"></div>
+  </div>
+
+
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="white-box shadow">
+            <div class="d-md-flex mb-3">
+                <h3 class="box-title mb-0">Revenue in Engineering School:</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table no-wrap">
+                    <thead>
+                        <tr>
+                            <th class="border-top-0">Semester</th>
+                            <th class="border-top-0">Semester No.</th>
+                            <th class="border-top-0">Year</th>
+                            <th class="border-top-0">CSE</th>
+                            <th class="border-top-0">EEE</th>
+                            <th class="border-top-0">PS</th>
+                            <th class="border-top-0">SETS</th>
+                            <th class="border-top-0">CSE%</th>
+                            <th class="border-top-0">EEE%</th>
+                            <th class="border-top-0">PS%</th>
+                            <th class="border-top-0">SETS%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for i in data %}
+                      <tr>
+                        <td>{{i.semester}}</td>
+                        <td>{{i.semester_num}}</td>
+                        <td>{{i.year}}</td>
+                        <td>{{i.physci}}</td>
+                        <td>{{i.cse}}</td>
+                        <td>{{i.eee}}</td>
+                        <td>{{i.sets}}</td>
+                        <td>{{i.physcip}}</td>
+                        <td>{{i.csep}}</td>
+                        <td>{{i.eep}}</td>
+                        <td>{{i.setsp}}</td>
+                     </tr>
+                      {% endfor %}
+                          
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+//Combo Chart
+var options = {
+          series: [{
+          name: 'CSE%',
+          type: 'column',
+          data: [{% for i in data %} {{ i.csep }}, {% endfor %}]
+        },
+         {
+          name: 'CSE',
+          type: 'line',
+          data: [{% for i in data %} {{ i.cse }}, {% endfor %}]
+        },
+    ],
+          chart: {
+          height: 350,
+          type: 'line',
+          stacked: true
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          width: [1, 1, 4]
+        },
+        title: {
+          text: 'CSE Revenue and Change %',
+          align: 'left',
+          offsetX: 0
+        },
+        xaxis: {
+          categories: [{% for i in data %} '{{ i.semester }}', {% endfor %}],
+        },
+        yaxis: [
+          {
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#008FFB'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              }
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#008FFB',
+              }
+            },
+
+          },
+         
+          {
+            seriesName: 'ClassSize',
+            opposite: true,
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#FEB019'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              },
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#FEB019',
+              }
+            }
+          },
+        ],
+        tooltip: {
+          fixed: {
+            enabled: true,
+            position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
+            offsetY: 30,
+            offsetX: 60
+          },
+        },
+        legend: {
+          horizontalAlign: 'left',
+          offsetX: 40
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChart2"), options);
+        chart.render();
+
+//Combo Chart
+var options = {
+          series: [{
+          name: 'EEE%',
+          type: 'column',
+          data: [{% for i in data %} {{ i.eep }}, {% endfor %}]
+        },
+         {
+          name: 'EEE',
+          type: 'line',
+          data: [{% for i in data %} {{ i.eee }}, {% endfor %}]
+        },
+    ],
+          chart: {
+          height: 350,
+          type: 'line',
+          stacked: true
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          width: [1, 1, 4]
+        },
+        title: {
+          text: 'EEE Department',
+          align: 'left',
+          offsetX: 0
+        },
+        xaxis: {
+          categories: [{% for i in data %} '{{ i.semester }}', {% endfor %}],
+        },
+        yaxis: [
+          {
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#008FFB'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              }
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#008FFB',
+              }
+            },
+
+          },
+         
+          {
+            seriesName: 'ClassSize',
+            opposite: true,
+            axisTicks: {
+              show: true,
+            },
+            axisBorder: {
+              show: false,
+              color: '#FEB019'
+            },
+            labels: {
+              style: {
+                colors: '#008FFB',
+              },
+            },
+            title: {
+              text: "",
+              style: {
+                color: '#FEB019',
+              }
+            }
+          },
+        ],
+        tooltip: {
+          fixed: {
+            enabled: true,
+            position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
+            offsetY: 30,
+            offsetX: 60
+          },
+        },
+        legend: {
+          horizontalAlign: 'left',
+          offsetX: 40
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChart3"), options);
+        chart.render();
+
+
+
+
+
+
+
+//Stacked Area Chart
+var options = {
+    series: [
+    {
+      name: "CSE",
+      data: [{% for i in data %} {{ i.cse }}, {% endfor %}]
+    },
+    {
+      name: "EEE",
+      data: [{% for i in data %} {{ i.eee }}, {% endfor %}]
+    },
+     {
+      name: "PS",
+      data: [{% for i in data %} {{ i.physci }}, {% endfor %}]
+    },
+    ],
+        chart: {
+          height: 350,
+          stacked: true,
+          type: 'area'
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        title: {
+          text: 'Revenue of SETS',
+          align: 'left'
+        },
+        xaxis: {
+          categories: [{% for i in data %} "{{ i.semester }}", {% endfor %}]
+        },
+        tooltip: {
+          x: {
+            
+          },
+        },
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChart"), options);
+        chart.render();
+
+
+
+
+
+
+
+
+
+
+
+
+//Line Chart integration
+
+var options = {
+    series: [
+    {
+      name: "CSE",
+      data: [{% for i in data %} {{ i.cse }}, {% endfor %}]
+    },
+    {
+      name: "EEE",
+      data: [{% for i in data %} {{ i.eee }}, {% endfor %}]
+    },
+     {
+      name: "PS",
+      data: [{% for i in data %} {{ i.physci }}, {% endfor %}]
+    },
+    ],
+          chart: {
+          height: 350,
+          type: 'line',
+          zoom: {
+            enabled: false
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'straight'
+        },
+        title: {
+          text: 'Department wise revenue in SETS',
+          align: 'left'
+        },
+        grid: {
+          row: {
+            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+            opacity: 0.5
+          },
+        },
+        xaxis: {
+          categories: [{% for i in data %} "{{ i.semester }}", {% endfor %}],
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myLineChart"), options);
+        chart.render();
+
+
+
+
+$(document).ready(function() {
+    //store the value
+    if (localStorage.selectVal) {
+    // Select the value stored
+        $('select').val( localStorage.selectVal );
+    }
+});
+
+  //on refresh keep it persistent
+$('select').on('change', function(){
+    var currentVal = $(this).val();
+    localStorage.setItem('selectVal', currentVal );
+});
+
+</script>
+
+{% endblock content %}

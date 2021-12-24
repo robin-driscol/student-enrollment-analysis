@@ -26,6 +26,7 @@ from base.views import(
     req4,
     req5,
     req6,
+    req7,
     registerPage,
     loginPage,
     logoutUser,
@@ -43,6 +44,7 @@ urlpatterns = [
     path('req4/', req4, name='req4'),
     path('req5/', req5, name='req5'),
     path('req6/', req6, name='req6'),
+    path('req7/', req7, name='req7'),
     #path('input/', inputPage, name='input'),
     # path('input/', simple_upload, name='upload')
 ]

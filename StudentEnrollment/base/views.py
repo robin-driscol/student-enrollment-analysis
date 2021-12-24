@@ -273,7 +273,29 @@ from tbl order by year, semester_num''')
     return render(request, 'req6/req6.html', {'data': r})
 
 
+def req7(request):
+    cursor = connection.cursor()
+    cursor.execute('''
+            with tbl(Semester, Semester_num, year, PhySci, CSE, EEE, sets) as 
+(select distinct st.csemesterid "Semester", sem.nsemesternum "Semester_Num",sem.cyearid "year",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'PhySci')) as "physci",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid = 'CSE')) as "cse",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid like 'EEE')) as "eee",
+(sum(st.nstudentenrolled * ct.nnumofcred) filter (where ct.cdepartmentid like 'SETS')) as "sets"
+from section_t st, course_t ct, semester_t sem 
+where st.ccourseid = ct.ccourseid and st.csemesterid = sem.csemesterid 
+group by st.csemesterid, sem.nsemesternum, sem.cyearid
+order by sem.cyearid, sem.nsemesternum asc)
+select * ,
+coalesce((PhySci - LAG(PhySci,1) OVER (ORDER BY year, semester_num)) * 100 / LAG(PhySci,1) OVER (ORDER BY year, semester_num), 0) as "physcip",
+coalesce((CSE - LAG(CSE,1) OVER (ORDER BY year, semester_num)) * 100 / LAG(CSE,1) OVER (ORDER BY year, semester_num), 0) as "csep",
+coalesce((EEE - LAG(EEE,1) OVER (ORDER BY year, semester_num)) * 100 / LAG(EEE,1) OVER (ORDER BY year, semester_num), 0) as "eep",
+coalesce((sets - LAG(sets,1) OVER (ORDER BY year, semester_num)) * 100 / LAG(sets,1) OVER (ORDER BY year, semester_num), 0) as "setsp"
+from tbl order by year;''')
 
+
+    r = dictfetchall(cursor)
+    return render(request, 'req7/req7.html', {'data': r})
 
 
 
