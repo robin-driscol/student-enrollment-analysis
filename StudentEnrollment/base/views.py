@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.db import connection
 from .models import *
 from .forms import CreateUserForm
-from tablib import Dataset
+# from tablib import Dataset
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -26,10 +26,10 @@ def dashboard(request):
 
     data1 = (semesterID, semesterID, semesterID)
     cursor = connection.cursor()
-    cursor.execute('''select ranges."range",
-count(section_t.usectionid) filter (where section_t.csemesterid = %s) as "sections",
-(count(section_t.usectionid) filter (where section_t.csemesterid = %s))/12 as "classize_6",
-(count(section_t.usectionid) filter (where section_t.csemesterid = %s))/14 as "classize_7"
+    cursor.execute('''select ranges."range" "range", 
+count(section_t.usectionid) filter (where section_t.csemesterid = %s) as "sections", 
+round((count(section_t.usectionid) filter (where section_t.csemesterid = %s))/12::numeric,2) as "classize_6", 
+round((count(section_t.usectionid) filter (where section_t.csemesterid = %s))/14::numeric,2) as "classize_7"
                         from
                         (
                             select 1 minRange, 10 maxRange, '1-10' "range"
@@ -44,10 +44,10 @@ count(section_t.usectionid) filter (where section_t.csemesterid = %s) as "sectio
                             union all
                             select 51, 60, '51-60'
                         ) as ranges
-left join section_t
-    on section_t.nstudentenrolled between ranges.minRange and ranges.maxRange
-group by ranges.range
-order by ranges.range''', data1)
+                        left join section_t
+                            on section_t.nstudentenrolled between ranges.minRange and ranges.maxRange  
+                        group by ranges.range
+                        order by ranges.range''', data1)
     
     r = dictfetchall(cursor)
 
