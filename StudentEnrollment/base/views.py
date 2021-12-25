@@ -23,6 +23,9 @@ def dashboard(request):
     semesterID = None
     if request.method == "POST":
         semesterID = request.POST.get("dropdown")
+    
+    if semesterID == None:
+        semesterID = "Autumn2021"
 
     cursor = connection.cursor()
     cursor.execute('''select ranges."range" "range", 
@@ -49,7 +52,7 @@ round((count(section_t.usectionid))/14::numeric,2) as "classize_7"
                         ) as ranges
                         left join section_t
                             on section_t.nstudentenrolled between ranges.minRange and ranges.maxRange
-                        where section_t.csemesterid = 'Spring2021'
+                        where section_t.csemesterid = %s
                         group by ranges.range
                         order by ranges.range''', (semesterID,))
     
@@ -63,6 +66,9 @@ def req2(request):
     semesterID = None
     if request.method == "POST":
         semesterID = request.POST.get("dropdown2")
+    
+    if semesterID == None:
+        semesterID = "Autumn2021"
 
     # if request.method == "POST":
     #     semesterID = request.POST.get("dropdown")
@@ -111,6 +117,9 @@ def req3(request):
     semesterID = None
     if request.method == "POST":
         semesterID = request.POST.get("dropdown3")
+    
+    if semesterID == None:
+        semesterID = "Autumn2021"
 
     cursor = connection.cursor()
     data3 = (semesterID,semesterID)
@@ -199,7 +208,10 @@ from room_t rt
 
     semesterID = None
     if request.method == "POST":
-        semesterID = request.POST.get("dropdown5")              
+        semesterID = request.POST.get("dropdown4")
+
+    if semesterID == None:
+        semesterID = "Autumn2021"              
 
     cursor4 = connection.cursor()
     cursor4.execute("""
@@ -247,6 +259,9 @@ def req5(request):
     semesterID = None
     if request.method == "POST":
         semesterID = request.POST.get("dropdown5")
+    
+    if semesterID == None:
+        semesterID = "Autumn2021"
 
     cursor = connection.cursor()
     query = """
