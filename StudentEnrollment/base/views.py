@@ -211,7 +211,7 @@ from room_t rt
         semesterID = request.POST.get("dropdown4")
 
     if semesterID == None:
-        semesterID = "Autumn2021"              
+        semesterID = "Spring2021"              
 
     cursor4 = connection.cursor()
     cursor4.execute("""
