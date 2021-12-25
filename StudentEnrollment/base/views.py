@@ -60,7 +60,7 @@ round((count(section_t.usectionid))/14::numeric,2) as "classize_7"
 
     # print(connection.queries)
 
-    return render(request, 'dashboard/home.html', {'data': r})
+    return render(request, 'dashboard/home.html', {'data': r, 'sem': semesterID})
 
 def req2(request):
     semesterID = None
@@ -111,7 +111,7 @@ count(section_t.usectionid) "sections"
     cursor.execute(query,(semesterID,))
     r = dictfetchall(cursor)
 
-    return render(request, 'req2/req2.html', {'data': r})
+    return render(request, 'req2/req2.html', {'data': r, 'sem': semesterID})
 
 def req3(request):
     semesterID = None
@@ -174,7 +174,7 @@ where st.csemesterid = %s
     r = dictfetchall(cursor)
     r2 = dictfetchall(cursor2)
 
-    return render(request, 'req3/req3.html', {'data': r, 'data2': r2})
+    return render(request, 'req3/req3.html', {'data': r, 'data2': r2, 'sem': semesterID})
 
 
 
@@ -253,7 +253,7 @@ order by rt.nroomcapacity asc""", (semesterID,))
     
     
 
-    return render(request, 'req4/req4.html', {'data': r, 'data2': r2, 'data3': r3, 'data4': r4})
+    return render(request, 'req4/req4.html', {'data': r, 'data2': r2, 'data3': r3, 'data4': r4, 'sem': semesterID})
 
 def req5(request):
     semesterID = None
@@ -292,7 +292,7 @@ order by ranges.nrange asc
 """
     cursor.execute(query,(semesterID,))
     r = dictfetchall(cursor)
-    return render(request, 'req5/req5.html', {'data':r})
+    return render(request, 'req5/req5.html', {'data':r, 'sem': semesterID})
 
 
 def req6(request):
